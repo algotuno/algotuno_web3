@@ -6,29 +6,29 @@ export default async (req, res) => {
 
         let query;
 
-        // check if ticker_symbol, company_name and exchange name is specified
+        // check if user_id, config_name and config_value
         try{
             query = {
-                "tickerSymbol"  : req.body.ticker_symbol,
-                "companyName"   : req.body.company_name, 
-                "exchange"      : req.body.exchange
+                "userID"      : req.body.user_id,
+                "configName"  : req.body.config_name, 
+                "value"       : req.body.config_value
             }
         } catch (error) {
             const exceptionMsg = error.message;
             console.error(exceptionMsg)
             res.status(406).json({
-                "message" : "Specify the ticker_symbol, company_name and exchange_name",
+                "message" : "Specify the user_id, config_name and config_value",
                 "exception" : exceptionMsg
             });
         }
 
         try{
-            const add_stock_result = await prisma.stock.create({data:query});
-            const successMsg = `Inserted stock ${req.body.ticker_symbol}, ${req.body.company_name}, ${req.body.exchange}`;
+            const add_setting_result = await prisma.settings.create({data:query});
+            const successMsg = `Inserted ${req.body.user_id}, ${req.body.config_name}, ${req.body.config_value}`;
             console.log(successMsg);
             res.status(200).json({
                 "message" : successMsg,
-                "result" : add_stock_result
+                "result" : add_setting_result
             });
 
         } catch (error) {

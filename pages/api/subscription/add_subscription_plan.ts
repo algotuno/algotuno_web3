@@ -6,28 +6,28 @@ export default async (req, res) => {
 
         let query;
 
-        // check if config_name and config_value
+        // check if planName and price are specified
         try{
             query = {
-                "configName"  : req.body.config_name, 
-                "value"       : req.body.config_value
+                "planName"  : req.body.plan_name,
+                "price"   : req.body.price
             }
         } catch (error) {
             const exceptionMsg = error.message;
             console.error(exceptionMsg)
             res.status(406).json({
-                "message" : "Specify the config_name and config_value",
+                "message" : "Specify the plan_name and price",
                 "exception" : exceptionMsg
             });
         }
 
         try{
-            const add_setting_result = await prisma.settings.create({data:query});
-            const successMsg = `Inserted ${req.body.config_name}, ${req.body.config_value}`;
+            const add_plan = await prisma.stock.create({data:query});
+            const successMsg = `Inserted new plan ${req.body.plan_name}, ${req.body.price}`;
             console.log(successMsg);
             res.status(200).json({
                 "message" : successMsg,
-                "result" : add_setting_result
+                "result" : add_plan
             });
 
         } catch (error) {

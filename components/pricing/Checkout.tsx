@@ -17,15 +17,16 @@ import PaymentForm from './PaymentForm';
 import Review from './Review';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
+let price:number=0;
 
-function getStepContent(step: number) {
+function getStepContent(step: number,sID:number) {
   switch (step) {
     case 0:
       return <AddressForm />;
     case 1:
       return <PaymentForm />;
     case 2:
-      return <Review />;
+      return <Review sub={sID}/>;
     default:
       throw new Error('Unknown step');
   }
@@ -33,17 +34,72 @@ function getStepContent(step: number) {
 
 const theme = createTheme();
 
-export default function Checkout() {
-  const [activeStep, setActiveStep] = React.useState(0);
+const postreq=(uid,sid)=>{
+  return{
+    "user_id" : 	uid,
+    "subscription_plan_id"	: sid
+  }
+};
 
+export default function Checkout(props) {
+  
+  const data = props.uID;
+  const sID = parseInt(data.sID);
+  const uID = data.uID;
+
+  const [activeStep, setActiveStep] = React.useState(0);
+ 
+  
+
+  console.log(sID);
+  if(sID === 5){
+    price= 59;
+  }
+  else if(sID === 6){
+    price=99;
+  };
+
+console.log(price);
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
+  const handleSubmit=()=>{
+     upgradeSubscription(uID,sID);
+  };
+  
+  const upgradeSubscription = async (userID:string,sID:number) => {
+        
+    // const stocks:string= JSON.stringify(selected);
+     
+     
+     const res = await fetch(`/api/subscription/update_user_subscription`, {
+         method : 'POST',
+         headers: {
+           'Accept': 'application/json',
+           'Content-Type': 'application/json'
+         },
+         body: JSON.stringify(postreq(userID,sID))
+     })
+     .then(async res => {
+       const data = await res.json();
+       const message = data.message;
+       return message;
+     })
+     .then(message => {
+       console.log(message);
+     })
+     setTimeout(() => {
+      document.location.href = '/account/user_settings';
+
+  }, 4000);
+
+ };
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -71,18 +127,22 @@ export default function Checkout() {
           </Stepper>
           <React.Fragment>
             {activeStep === steps.length ? (
+              
               <React.Fragment>
+                {handleSubmit()}
                 <Typography variant="h5" gutterBottom>
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1">
-                  You will receive an email once the order has been approved.
+                  Purchase Successful.
                   Redirecting to the main page...
                 </Typography>
+
               </React.Fragment>
+              
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep)}
+                {getStepContent(activeStep,sID)}
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
@@ -95,6 +155,7 @@ export default function Checkout() {
                     sx={{ mt: 3, ml: 1 }}
                   >
                     {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+            
                   </Button>
                 </Box>
               </React.Fragment>

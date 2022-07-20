@@ -63,6 +63,13 @@ const SearchBar = ({ setSearchQuery }) => (
     </form>
 );
 
+const postreq=(userID,stocks)=>{
+    return{
+      "user_id" : 	userID,
+      "stocks"	: stocks
+    }
+  };
+
 export default function StockPriceListTable() {
     
     const [loading, setLoading] = useState<boolean>();
@@ -193,22 +200,56 @@ export default function StockPriceListTable() {
         setSelected(newSelected);
       };
     
-     const updateUserStockList=()=>{
-        console.log(selected)
+    //  const updateUserStockList=()=>{
+    //     console.log(JSON.stringify(selected))
+    //  }
+    let userID = "cl5kx0w9y0004ysv692x34doo";
+   
+     const updateUserStockList = async (userID:string) => {
+        
+       // const stocks:string= JSON.stringify(selected);
+        
+        
+        const res = await fetch(`/api/watchlist/update_watchlist`, {
+            method : 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postreq(userID,selected))
+        })
+        .then(async res => {
+          const data = await res.json();
+          const message = data.message;
+          return message;
+        })
+        .then(message => {
+        setDisplay(true);
+        setMessage(message);
+        setStatus(true);
+    
+          //sto(true);
+          //setIsLoading(false);
+        })
+        setTimeout(() => {
+            setStatus(null);
+            setMessage("timed out");
+            setDisplay(false);
+        }, 3000);
+    };
 
-     }
     return (
         <div>
             <AlertComponent display={display} status={status} message={message} />
             <br />
             <div>
                 <Paper>
-                    <Box pt={0.5} pl={2.5} pb={2.5} pr={2.5}>
+                    <Box pt={0.0} pl={2.5} pb={5} pr={2.5}>
                         { /*** if no items to display do not display the search bar ***/}
                         {
                                 rows !== undefined && rows.length > 0 ?
                             <div>
-                                <h5>Search for stock(s)</h5>
+            
                                 <Grid container spacing={2}>
                                     <Grid item xs={3}>
                                         <SearchBar setSearchQuery={val => requestSearch(val)} />
@@ -220,7 +261,7 @@ export default function StockPriceListTable() {
                                     }}>
                                         Add to Watchlist
                                         <IconButton type="submit" aria-label="submit">
-                                            <AddCircleOutlineRoundedIcon style={{ fill: "blue" }} onClick={()=>updateUserStockList()} />
+                                            <AddCircleOutlineRoundedIcon style={{ fill: "blue" }} onClick={()=>updateUserStockList(userID)} />
                                         </IconButton>
                                     </div>
                                 </Grid>
@@ -234,7 +275,7 @@ export default function StockPriceListTable() {
                     <LinearProgress style={{ backgroundColor: "black" }} />
                      ) : (
                         rows !== undefined && rows.length > 0 ?
-                        <TableContainer style={{ maxHeight: 400 }}>
+                        <TableContainer style={{ maxHeight: 350 }}>
                             <Table style={{ minWidth: 650 }} aria-label="simple table">
                                 <TableHead>
                                     <TableRow>

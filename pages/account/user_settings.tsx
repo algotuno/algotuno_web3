@@ -69,7 +69,7 @@ export default function Page() {
                     </TabContext>
                 </Box>
 
-                <Box style={{marginBottom: "7.5em"}}/>
+                <Box style={{marginBottom: "7em"}}/>
             </Container>
         </LayoutHeader>
     );

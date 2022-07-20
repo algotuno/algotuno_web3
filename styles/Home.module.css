@@ -84,6 +84,8 @@
   display: grid;
   grid-template-columns: 3fr 1fr;
   grid-gap: 10px;
+  justify-items: center;
+  
 }
 
 .container_left {
@@ -108,7 +110,7 @@
 }
 
 .stockwidget{
-  margin-top: 5rem;
+  margin-top: 7rem;
   width:70%;
-  padding: 0rem 5rem;
+  
 }

@@ -91,7 +91,7 @@ const StockPage = ({errorCode,message, stockList,ticker,exchange,count,predictio
             lastupdated = {stockList.results[count-1].DateString}
             />
         
-            <div className={styles.container_left}>
+            
               <MyChart
               //@ts-ignore
                 xyDataList = {stockList}
@@ -99,12 +99,9 @@ const StockPage = ({errorCode,message, stockList,ticker,exchange,count,predictio
                 pDataListB = {predictionDataB}
                 tickerName = {ticker}
               />
-            </div> 
+             
             
-            
-            <div className={styles.container_right}>
-              {/* <Watchlist/> */}
-            </div> 
+        
         </div>
         </div>
       <div className={styles.tablegrid}>

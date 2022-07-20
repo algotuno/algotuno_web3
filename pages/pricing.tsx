@@ -24,7 +24,7 @@ const tiers = [
     price: '0',
     description: [
       'View upto 10 stocks',
-      'View upto 1 prediction result',
+      'View upto 2 prediction results',
     ],
     buttonText: 'Sign up for free',
     buttonVariant: 'outlined',
@@ -60,7 +60,7 @@ function PricingContent() {
       <GlobalStyles styles={{ li: { margin: 0, padding: 0, listStyle: 'none' }, ul:{padding: 0} }} />
       <CssBaseline />
       {/* Hero unit */}
-      <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
+      <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 12, pb: 6 }}>
         <Typography
           component="h1"
           variant="h2"
@@ -76,17 +76,19 @@ function PricingContent() {
       </Container>
       {/* End hero unit */}
       <Container maxWidth="md" component="main">
-        <Grid container spacing={5} alignItems="flex-end">
+        <Grid container spacing={5} alignItems="flex-end" >
           {tiers.map((tier) => (
             // Enterprise card is full width at sm breakpoint
             <Grid
               item
               key={tier.title}
-              xs={12}
-              sm={tier.title === 'Full Access' ? 12 : 6}
+              // xs={12}
+              // sm={tier.title === 'Full Access' ? 12 : 6}
+              sm={6}
               md={4}
+              
             >
-              <Card>
+              <Card style={{height: '350px'}}>
                 <CardHeader
                   title={tier.title}
                   subheader={tier.subheader}
@@ -109,6 +111,7 @@ function PricingContent() {
                       justifyContent: 'center',
                       alignItems: 'baseline',
                       mb: 2,
+                      
                     }}
                   >
                     <Typography component="h2" variant="h3" color="text.primary">
@@ -132,22 +135,25 @@ function PricingContent() {
                   </ul>
                 </CardContent>
                 <CardActions>
-                <Link href='/checkout'>
-                  <Button
-                    fullWidth
-                    variant={tier.buttonVariant as 'outlined' | 'contained'}
-                    
-                  >
-                    {tier.buttonText}
-                  </Button>
-                  </Link>
+                {/* <Link href='/checkout'>
+                  
+                  </Link> */}
                 </CardActions>
               </Card>
             </Grid>
           ))}
         </Grid>
       </Container>
-
+      <Container sx={{ pt: 5, pb: 6 }} >
+        <Typography
+        align="center">
+            <Button variant='contained' style={{width:400}} href="/account/register">
+              SIGN UP NOW
+            </Button> 
+        </Typography>
+        
+      </Container>
+                 
       
     </React.Fragment>
     

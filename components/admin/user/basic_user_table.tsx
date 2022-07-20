@@ -19,41 +19,7 @@ import {
 import AlertComponent from "../../alert/alert_message";
 import axios_api from "../../../config/axios_api";
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-// interface BasicUserInterface {
-//     username: string;
-//     date_created: string;
-//     subscription_type: string;
-// }
 
-
-// const originalRows: BasicUserInterface[] = [
-//     {username: "Varrick", date_created: "10-jun-2022", subscription_type: "basic"},
-//     {username: "Sayyid", date_created: "10-jun-2022", subscription_type: "premium"},
-//     {username: "Kian Guan", date_created: "10-jun-2022", subscription_type: "basic"},
-//     {username: "Hari", date_created: "10-jun-2022", subscription_type: "premium"},
-// ];
-
-// export async function  getServerSideProps(){
-//     try{
-//         const res= await fetch(BASE_URL+"/api/user/get_all_user",{
-//             method:'GET',
-//             headers:{
-                
-//                 'Content-Type':'application/json'
-//             }
-//         });
-//         const getUsers = await res.json();
-
-//         return{
-//             props:{userList:getUsers},
-//         }
-
-//     }
-//     catch(error)
-//     {
-//         return{ props:{errorCode:500, message: 'Failed to fetch DB data'}}
-//     }
-// }
 
 
 const SearchBar = ({searched}) => (

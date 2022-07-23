@@ -157,7 +157,7 @@ export default function DataGridDemo() {
             </Button>
         </Grid>
         {/* Button Upgrade to Full Access */}
-        <Grid item xs={2} alignContent="center">
+        <Grid item xs={2}  mt="10px">
         {/* <Button disabled={fullbutton} onClick={()=>{}}>Upgrade to Full Access</Button> */}
         <Button disabled={fullbutton} 
             variant='contained'

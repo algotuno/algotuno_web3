@@ -1,4 +1,4 @@
-import LayoutHeader from "../../components/layout_header";
+import {LayoutAdmin} from "../../components/layout_header";
 import * as React from "react";
 import {Container, Grid, Paper, styled} from "@mui/material";
 import Box from "@mui/material/Box";
@@ -9,7 +9,7 @@ import VerticalTabs from "../../components/admin/main/main_tabs";
 export default function Page() {
 
     return (
-        <LayoutHeader>
+        <LayoutAdmin>
             <Container maxWidth="xl">
                 <Box style={{marginTop: "7.5em"}}/>
 
@@ -21,7 +21,7 @@ export default function Page() {
                 <Box style={{marginBottom: "7.5em"}}/>
 
             </Container>
-        </LayoutHeader>
+        </LayoutAdmin>
     )
 }
 

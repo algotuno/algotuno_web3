@@ -16,12 +16,17 @@ export default function Page (props){
       <Head>
         <title>Home</title>
       </Head>
-              <Container style={{marginTop: "5.5em"}}>
-                <TickerTapeComponent />
-              </Container>
-                <StocksList/>
-    
+      
+      <Container style={{marginTop: "5.5em"}}>
+        <TickerTapeComponent />
+      </Container>
+      
+      <Container style={{minHeight: "30em"}}>
+      <StocksList/>
+      </Container>
+  
     </Layout>
+    
   )
 }
 

@@ -59,13 +59,15 @@ export async function getServerSideProps(context) {
             const content  = await response.json();
             const predictionDataA = await predictionres.json();
             const predictionDataB = await predictionresB.json();
+
+            
             
         return {
             props : {stockList:content, count:content.results.length,ticker: ticker,exchange:exchange,predictionDataA:predictionDataA,predictionDataB:predictionDataB },
         }
     }catch (error)
     {
-        return{ props:{errorCode:500, message: 'Failed to fetch DB data'}}
+        return{ props:{errorCode:500, message: 'Failed to fetch DB data',predictionDataA:"",predictionDataB:"" }}
     }
     
 };
@@ -74,9 +76,9 @@ export async function getServerSideProps(context) {
 const StockPage = ({errorCode,message, stockList,ticker,exchange,count,predictionDataA,predictionDataB}) => {
     
   
-    if(errorCode){
-       return <Error statusCode= {errorCode} title={message}/>
-    };
+    // if(errorCode){
+    //    return <Error statusCode= {errorCode} title={message}/>
+    // };
 
     return(
         

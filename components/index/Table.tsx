@@ -18,8 +18,6 @@ import {
   Paper,
 } from "@mui/material"
 import { useEffect, useState } from 'react';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Co2Sharp } from '@mui/icons-material';
 let userID = "cl5kx0w9y0004ysv692x34doo";
 
 export let watchliststorage=[];

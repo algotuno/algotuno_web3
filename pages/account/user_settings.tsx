@@ -5,11 +5,11 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
 import { createTheme } from "@mui/material/styles";
-import { LayoutUser } from "../../components/layout_header";
 import { Grid, Tab, Tabs, TextField } from "@mui/material";
 import { TabContext, TabPanel } from "@mui/lab";
 import EnhancedTable from "../../components/user/subscription";
 import StockPriceListTable from "../../components/user/stockconfig";
+import Layout from "../../components/layout";
 
 const theme = createTheme();
 
@@ -44,11 +44,19 @@ export default function Page() {
   };
 
   return (
-    <LayoutUser>
+    <Layout>
       <Container maxWidth="xl">
-        <Box style={{ marginTop: "5.5em" }} />
+        {/* <Box style={{ marginTop: "5.5em" }} /> */}
 
-        <Box sx={{ width: "100%", bgcolor: "#cfe8fc", height: "80vh" }}>
+        <Box
+          sx={{
+            width: "100%",
+            bgcolor: "#cfe8fc",
+
+            marginTop: "5.5em",
+            marginBottom: "5em",
+          }}
+        >
           <h1 style={{ textAlign: "center" }}>User Settings</h1>
           <Tabs value={value} onChange={handleChange}>
             <Tab label="Stock Configuration" style={styles.tab_styling} />
@@ -63,10 +71,8 @@ export default function Page() {
             </TabPanel>
           </TabContext>
         </Box>
-
-        <Box style={{ marginBottom: "7em" }} />
       </Container>
-    </LayoutUser>
+    </Layout>
   );
 }
 

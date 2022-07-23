@@ -1,59 +1,74 @@
-import Link from "next/link"
-import {signOut, useSession} from "next-auth/react"
-import styles from "./header.module.css"
+import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
+import styles from "./header.module.css";
 import Router from "next/router";
-
+import { Button } from "@mui/material";
 
 export default function Header() {
-    const {data: session, status} = useSession();
-    const loading = status === "loading";
-    const buttonSize = {"height": "4em", "width": "8em"};
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
+  const buttonSize = { height: "4em", width: "8em" };
 
-    const signOutAndRedirect = async () => {
-        await Router.push('/');
-        await signOut();
-    };
+  const signOutAndRedirect = async () => {
+    await Router.push("/");
+    await signOut();
+  };
 
-    return (
-        <header>
-            <div className={styles.navbar}>
-                <span className={styles.logo}>algotuno.io</span>
-                <nav>
-                    <ul className={styles.navItems}>
-                        {
-                            session ?
-                                <li className={styles.navItem}>
-                                    <Link href="/main">
-                                        <a>Dashboard</a>
-                                    </Link>
-                                </li> : <></>
-                        }
-                        {
-                            session ?
-                                <li className={styles.navItem}>
-                                    <Link href="/charts">
-                                        <a>Markets</a>
-                                    </Link>
-                                </li> : <></>
-                        }
-                        <li className={styles.navItem}>
-                            <Link href="/pricing">
-                                <a>Pricing</a>
-                            </Link>
-                        </li>
-                        <li className={styles.navItem}>
-                            <Link href="/about">
-                                <a>About Us</a>
-                            </Link>
-                        </li>
-                        {session ? (
-                            <li className={styles.navItem}>
-                                <a onClick={() => signOutAndRedirect()}><b>Log Out</b></a>
-                            </li>
-                        ) : <></>}
-                    </ul>
-                </nav>
-            </div>
-        </header>
-    )
+  return (
+    <header>
+      <div className={styles.navbar}>
+        <span className={styles.logo}>algotuno.io</span>
+        <nav>
+          <ul className={styles.navItems}>
+            {session ? (
+              <li className={styles.navItem}>
+                <Link href="/main">
+                  <a>Dashboard</a>
+                </Link>
+              </li>
+            ) : (
+              <></>
+            )}
+            {session ? (
+              <li className={styles.navItem}>
+                <Link href="/charts">
+                  <a>Markets</a>
+                </Link>
+              </li>
+            ) : (
+              <></>
+            )}
+            <li className={styles.navItem}>
+              <Link href="/pricing">
+                <a>Pricing</a>
+              </Link>
+            </li>
+            <li className={styles.navItem}>
+              <Link href="/about">
+                <a>About Us</a>
+              </Link>
+            </li>
+            {session ? (
+              <li className={styles.navItem}>
+                <Link href="//account/user_settings">
+                  <a>Settings</a>
+                </Link>
+              </li>
+            ) : (
+              <></>
+            )}
+            {session ? (
+              <li className={styles.navItem}>
+                <a onClick={() => signOutAndRedirect()}>
+                  <b>Log Out</b>
+                </a>
+              </li>
+            ) : (
+              <></>
+            )}
+          </ul>
+        </nav>
+      </div>
+    </header>
+  );
 }

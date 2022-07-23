@@ -136,9 +136,6 @@ export default function BasicUserTable() {
     fetchUsers();
   };
 
-  const handleClickAway = () => {
-    setOpen(false);
-  };
   const deleteUser = async (username) => {
     const res = await fetch(`/api/user/delete_user`, {
       method: "POST",
@@ -206,23 +203,17 @@ export default function BasicUserTable() {
       <br />
       <div>
         <Paper>
-          <ClickAwayListener
-            mouseEvent="onMouseDown"
-            touchEvent="onTouchStart"
-            onClickAway={handleClickAway}
-          >
-            <Box pt={2.5} pl={2.5} pb={2.5} pr={2.5}>
-              <Grid container spacing={2}>
-                <Grid item xs={3}>
-                  <SearchBar searched={(val) => requestSearch(val)} />
-                </Grid>
-                <Grid item xs={3}>
-                  {/* todo: add function for add user */}
-                  {/* <AddUserBar setSearchQuery={val=>requestSearch(val)}  /> */}
-                </Grid>
+          <Box pt={2.5} pl={2.5} pb={2.5} pr={2.5}>
+            <Grid container spacing={2}>
+              <Grid item xs={3}>
+                <SearchBar searched={(val) => requestSearch(val)} />
               </Grid>
-            </Box>
-          </ClickAwayListener>
+              <Grid item xs={3}>
+                {/* todo: add function for add user */}
+                {/* <AddUserBar setSearchQuery={val=>requestSearch(val)}  /> */}
+              </Grid>
+            </Grid>
+          </Box>
 
           <TableContainer style={{ maxHeight: 400 }}>
             {loadingBar ? (

@@ -20,16 +20,22 @@ export default function Header() {
                 <span className={styles.logo}>algotuno.io</span>
                 <nav>
                     <ul className={styles.navItems}>
-                        <li className={styles.navItem}>
-                            <Link href="/main">
-                                <a>Dashboard</a>
-                            </Link>
-                        </li>
-                        <li className={styles.navItem}>
-                            <Link href="/charts">
-                                <a>Markets</a>
-                            </Link>
-                        </li>
+                        {
+                            session ?
+                                <li className={styles.navItem}>
+                                    <Link href="/main">
+                                        <a>Dashboard</a>
+                                    </Link>
+                                </li> : <></>
+                        }
+                        {
+                            session ?
+                                <li className={styles.navItem}>
+                                    <Link href="/charts">
+                                        <a>Markets</a>
+                                    </Link>
+                                </li> : <></>
+                        }
                         <li className={styles.navItem}>
                             <Link href="/pricing">
                                 <a>Pricing</a>

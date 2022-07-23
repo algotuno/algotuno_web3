@@ -28,8 +28,6 @@ Example:
 ```
 {
     "ticker_symbol" 	:   "GOOG",
-    "company_name"  	:   "Google",
-    "exchange"     	:   "NYSE"
 }
 ```
 
@@ -159,24 +157,15 @@ Example:
 
 ```
 {
-    "ticker_symbol": "AAPL",
-    "model_type": 1,
-    "prediction": [
-        {
-            "1654905600000": 136.62466430664062
-        },
-        {
-            "1655424000000": 130.37684631347656
-        },
-        {
-            "1657411200000": 127.59423828125
-        }
+    "ticker_symbol"   : "GLD",
+    "model_type"      : "1", 
+    "prediction"      : [ 
+        {"epoch_time" : 1658552938000, "price" : 123.45, "confidence_score" : 95.01, "rate_of_error": 1.20},
+        {"epoch_time" : 1659157597000, "price" : 135.55, "confidence_score" : 90.01, "rate_of_error": 5.23},
+        {"epoch_time" : 1659848797000, "price" : 136.52, "confidence_score" : 85.01, "rate_of_error": 10.53}
     ]
 }
 ```
-
-Notes:
-- This endpoint requires the correct "authorization" Headers field.
 
 ## update_tensorflow_prices.ts
 To get and update the Tensorflow prediction prices, send a GET request to the **/api/stock/update_tensorflow_prices** endpoint.

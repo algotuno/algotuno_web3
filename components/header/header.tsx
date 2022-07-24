@@ -50,7 +50,7 @@ export default function Header() {
             </li>
             {session ? (
               <li className={styles.navItem}>
-                <Link href="//account/user_settings">
+                <Link href="/account/user_settings">
                   <a>Settings</a>
                 </Link>
               </li>

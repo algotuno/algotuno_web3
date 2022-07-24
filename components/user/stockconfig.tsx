@@ -20,13 +20,12 @@ import {
   Typography,
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import AlertComponent from "../alert/alert_message";
 import axios_api from "../../config/axios_api";
-import { NamedTupleMember } from "typescript";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
 import { MouseEvent } from "react";
+import { convertCompilerOptionsFromJson } from "typescript";
 
 type Order = "asc" | "desc";
 // interface EnhancedTableProps {
@@ -84,23 +83,16 @@ export default function StockPriceListTable() {
   const [loading, setLoading] = useState<boolean>();
   const [rows, setRows] = useState<BasicUserInterface[]>();
   const [searched, setSearched] = useState<string>("");
-
-  const [tickersymbol, setTickerSymbol] = useState("");
-  const [companyname, setCompanyName] = useState("");
-  const [exchange, setExchangeName] = useState("");
-
   const [display, setDisplay] = useState<boolean>(false);
   const [stat, setStatus] = useState<boolean>(null);
   const [message, setMessage] = useState("");
-
+  const [limit, setLimit] = useState<number>();
   const [selected, setSelected] = React.useState([]);
 
   let userID;
 
   if (status === "authenticated") {
     userID = session.id;
-  } else if (status === "unauthenticated") {
-    return <p>Not signed in</p>;
   }
 
   const fetchStocks = async () => {
@@ -115,13 +107,30 @@ export default function StockPriceListTable() {
   };
 
   useEffect(() => {
+    fetchUserDetails();
     fetchStocks();
     setSelected([]);
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(tickersymbol, companyname, exchange);
+  const fetchUserDetails = async () => {
+    setLoading(true);
+    const res = await fetch(`/api/user/get_user_details`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: userID,
+      }),
+    }).then(async (res) => {
+      const data = await res.json();
+      const values = data.result;
+      const plan = values.Subscription[0].Subscription_Plan;
+      setLimit(plan["watchlistLimit"]);
+
+      setLoading(false);
+    });
   };
 
   const requestSearch = async (searchedVal: string) => {
@@ -144,15 +153,6 @@ export default function StockPriceListTable() {
 
   const isSelected = (stockID: string) => selected.indexOf(stockID) !== -1;
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.stockID.toString());
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
   const resetSelection = () => {
     setSelected([]);
   };
@@ -163,7 +163,7 @@ export default function StockPriceListTable() {
     stockID: number
   ) => {
     setDisplay(false);
-    if (selected.length < 3) {
+    if (selected.length < limit) {
       const selectedIndex = selected.indexOf(stockID.toString());
       let newSelected: string[] = [];
       if (selectedIndex === -1) {
@@ -223,63 +223,52 @@ export default function StockPriceListTable() {
   interface EnhancedTableToolbarProps {
     numSelected: number;
   }
+
   const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     const { numSelected } = props;
 
     return (
       <Toolbar
-        sx={{
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-          //   ...(numSelected > 0 && {
-          //     bgcolor: (theme) =>
-          //       alpha(
-          //         theme.palette.primary.main,
-          //         theme.palette.action.activatedOpacity
-          //       ),
-          //   }),
-        }}
+      // sx={{
+      //   pl: { sm: 2 },
+      //   pr: { xs: 1, sm: 1 },
+      // }}
       >
         {numSelected > 0 ? (
-          <Typography
-            sx={{ flex: "1 1 100%" }}
-            color="inherit"
-            variant="subtitle1"
-            component="div"
-          >
-            {numSelected} selected
-          </Typography>
+          <div>
+            <Grid container spacing={1} mt={1}>
+              <Grid item xs={4} alignContent="left">
+                <Typography fontSize={14}>
+                  {numSelected} / {limit} selected
+                </Typography>
+              </Grid>
+              <Grid item xs={8} alignContent="right">
+                <Button
+                  disabled={false}
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  onClick={() => {
+                    resetSelection();
+                  }}
+                >
+                  Reset Selection
+                </Button>
+              </Grid>
+            </Grid>
+          </div>
         ) : (
-          <Typography
-            sx={{ flex: "1 1 100%" }}
-            variant="h6"
-            id="tableTitle"
-            component="div"
-          ></Typography>
-        )}
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton></IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Filter list">
-            <IconButton></IconButton>
-          </Tooltip>
+          <></>
         )}
       </Toolbar>
     );
   };
+
   return (
     <div>
-      <Head>
-        <title>Configure Watchlist</title>
-      </Head>
       <div>
         <Paper>
           <Box pt={0.0} pl={2.5} pb={1} pr={2.5}>
-            <Typography textAlign="right">
-              *Basic users are only allowed to make 1 update in 2 weeks.
-            </Typography>
             {/*** if no items to display do not display the search bar ***/}
             {rows !== undefined && rows.length > 0 ? (
               <div>
@@ -289,21 +278,6 @@ export default function StockPriceListTable() {
                   </Grid>
 
                   <Grid item xs={2}>
-                    {/* <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      Add to Watchlist
-                      <IconButton type="submit" aria-label="submit">
-                        <AddCircleOutlineRoundedIcon
-                          style={{ fill: "blue" }}
-                          onClick={() => updateUserStockList(userID.toString())}
-                        />
-                      </IconButton>
-
-                    </div> */}
                     <Button
                       disabled={false}
                       variant="contained"
@@ -322,26 +296,17 @@ export default function StockPriceListTable() {
                       message={message}
                     />
                   </Grid>
-                </Grid>
 
-                <Grid container>
-                  <Grid item xs={2} mt={2}>
-                    <Button
-                      disabled={false}
-                      variant="outlined"
-                      size="small"
-                      onClick={() => {
-                        resetSelection();
-                      }}
-                    >
-                      Reset Selection
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={2} alignContent="right">
-                    <EnhancedTableToolbar numSelected={selected.length} />
+                  <Grid item xs={4} alignContent="right">
+                    <Typography textAlign="right">
+                      *Basic users can make upto 3 updates per month.
+                    </Typography>
                   </Grid>
                 </Grid>
+
+                {/* <Grid item xs={2} mt={2}></Grid> */}
+
+                <EnhancedTableToolbar numSelected={selected.length} />
               </div>
             ) : (
               <br />

@@ -48,9 +48,6 @@ export default function StocksList(props) {
     return <p>Not signed in</p>;
   }
 
-  console.log(session);
-  //const [page, setPage] = useState(1);
-
   const useStyles = makeStyles({
     row: {
       backgroundColor: "#16171a",

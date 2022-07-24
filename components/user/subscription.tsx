@@ -18,11 +18,8 @@ import {
   TextField,
 } from "@mui/material";
 import AlertComponent from "../alert/alert_message";
-import { AlignHorizontalCenter, ContactPage } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-
-// const { data: session, status } = useSession();
 
 const postreq = (userID, sID) => {
   return {
@@ -45,8 +42,6 @@ export default function DataGridDemo() {
 
   if (status === "authenticated") {
     userID = session.id;
-  } else if (status === "unauthenticated") {
-    return <p>Not signed in</p>;
   }
 
   // const fetchSubscription = async () => {
@@ -157,9 +152,6 @@ export default function DataGridDemo() {
   return (
     <div>
       <AlertComponent display={display} status={stat} message={message} />
-      <Head>
-        <title>Manage Subscription</title>
-      </Head>
 
       <br />
       <Paper>

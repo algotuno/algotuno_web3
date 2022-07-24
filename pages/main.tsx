@@ -15,14 +15,15 @@ export default function Page(props) {
       <Head>
         <title>Home</title>
       </Head>
+      <BasicUserAuth>
+        <Container style={{ marginTop: "5.5em" }}>
+          <TickerTapeComponent />
+        </Container>
 
-      <Container style={{ marginTop: "5.5em" }}>
-        <TickerTapeComponent />
-      </Container>
-
-      <Container style={{ minHeight: "30em" }}>
-        <StocksList />
-      </Container>
+        <Container style={{ minHeight: "30em" }}>
+          <StocksList />
+        </Container>
+      </BasicUserAuth>
     </Layout>
   );
 }

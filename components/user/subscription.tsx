@@ -41,7 +41,13 @@ export default function DataGridDemo() {
   const [stat, setStatus] = useState<boolean>(null);
   const [message, setMessage] = useState("");
 
-  let userID = session.id;
+  let userID;
+
+  if (status === "authenticated") {
+    userID = session.id;
+  } else if (status === "unauthenticated") {
+    return <p>Not signed in</p>;
+  }
 
   // const fetchSubscription = async () => {
   //   setLoading(true);

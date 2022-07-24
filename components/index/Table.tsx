@@ -40,8 +40,14 @@ export default function StocksList(props) {
   const [stat, setStatus] = useState<boolean>(null);
   const [message, setMessage] = useState("");
   //const [userID, setUserID] = useState("");
+  let userID;
 
-  let userID = session.id;
+  if (status === "authenticated") {
+    userID = session.id;
+  } else if (status === "unauthenticated") {
+    return <p>Not signed in</p>;
+  }
+
   console.log(session);
   //const [page, setPage] = useState(1);
 

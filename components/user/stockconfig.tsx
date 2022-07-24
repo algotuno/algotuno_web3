@@ -95,7 +95,13 @@ export default function StockPriceListTable() {
 
   const [selected, setSelected] = React.useState([]);
 
-  const userID = session.id;
+  let userID;
+
+  if (status === "authenticated") {
+    userID = session.id;
+  } else if (status === "unauthenticated") {
+    return <p>Not signed in</p>;
+  }
 
   const fetchStocks = async () => {
     setLoading(true);

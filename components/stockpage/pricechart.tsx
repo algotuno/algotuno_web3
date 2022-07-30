@@ -127,7 +127,7 @@ function MyChart(props) {
     <div>
       {/*// @ts-ignore*/}
       {statusA ? (
-        <div>
+        <React.Fragment>
           <Plot
             // @ts-ignore
             data={[trace1, trace2, trace3]}
@@ -136,9 +136,9 @@ function MyChart(props) {
             // @ts-ignore
             //frames={this.state.frames}
           />
-        </div>
+        </React.Fragment>
       ) : (
-        <div>
+        <React.Fragment>
           <Plot
             // @ts-ignore
             data={[trace1]}
@@ -147,7 +147,7 @@ function MyChart(props) {
             // @ts-ignore
             //frames={this.state.frames}
           />
-        </div>
+        </React.Fragment>
       )}
     </div>
   );

@@ -114,23 +114,27 @@ export default function StockPriceListTable() {
 
   const fetchUserDetails = async () => {
     setLoading(true);
-    const res = await fetch(`/api/user/get_user_details`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: userID,
-      }),
-    }).then(async (res) => {
-      const data = await res.json();
-      const values = data.result;
-      const plan = values.Subscription[0].Subscription_Plan;
-      setLimit(plan["watchlistLimit"]);
+    try {
+      const res = await fetch(`/api/user/get_user_details`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userID,
+        }),
+      }).then(async (res) => {
+        const data = await res.json();
+        const values = data.result;
+        const plan = values.Subscription[0].Subscription_Plan;
+        setLimit(plan["watchlistLimit"]);
 
-      setLoading(false);
-    });
+        setLoading(false);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const requestSearch = async (searchedVal: string) => {

@@ -7,6 +7,7 @@ import Error from "next/error";
 import Watchlist from "../components/watchlist/watchlist";
 import StockCard from "../components/stockpage/stockheadercard";
 import StickyHeadTable from "../components/stockpage/table";
+import { useState } from "react";
 
 const postreq = (ticker) => {
   return {
@@ -75,8 +76,8 @@ export async function getServerSideProps(context) {
       props: {
         errorCode: 500,
         message: "Failed to fetch DB data",
-        predictionDataA: "",
-        predictionDataB: "",
+        predictionDataA: "[]",
+        predictionDataB: "[]",
       },
     };
   }
@@ -92,17 +93,16 @@ const StockPage = ({
   predictionDataA,
   predictionDataB,
 }) => {
-  if (errorCode) {
-    return <Error statusCode={errorCode} title={message} />;
-  }
-  console.log(predictionDataA);
-  console.log(predictionDataB);
+  // if (errorCode) {
+  //   return <Error statusCode={errorCode} title={message} />;
+  // }
+
   return (
     <Layout>
       <div className={styles.chartarea}>
         <div className={styles.container}>
           <h2>Price Forecast </h2>
-          {/* <StockCard
+          <StockCard
             tickerName={ticker}
             lastprice={stockList.results[count - 1].Close}
             exchange={exchange}
@@ -122,7 +122,10 @@ const StockPage = ({
           <StickyHeadTable pData={predictionDataA} />
         </div>
         <div className={styles.table2}>
-          <StickyHeadTable pData={predictionDataB} /> */}
+          <StickyHeadTable
+            pData={predictionDataB}
+            lastprice={stockList.results[count - 1].Close}
+          />
         </div>
       </div>
     </Layout>

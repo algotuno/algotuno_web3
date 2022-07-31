@@ -4,13 +4,13 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
-import {BASE_URL} from '../../../config/db_prod_checker';
+
 import {createTheme} from '@mui/material/styles';
-import LayoutHeader from "../../../components/layout_header";
-import {Grid, Tab, Tabs, TextField} from "@mui/material";
+import LayoutHeader from "../../components/layout_header";
+import {Tab, Tabs} from "@mui/material";
 import {TabContext, TabPanel} from "@mui/lab";
-import StockPriceListTable from "../../../components/admin/stock/stock_price_list_table";
-import MLPriceListTable from "../../../components/admin/stock/ml_price_list_table";
+import EnhancedTable from '../../components/user/subscription';
+import StockPriceListTable from '../../components/user/stockconfig';
 
 
 const theme = createTheme();
@@ -48,19 +48,21 @@ export default function Page() {
     return (
         <LayoutHeader>
             <Container maxWidth="xl">
+                
                 <Box style={{marginTop: "5.5em"}}/>
+                
                 <Box sx={{width: '100%', bgcolor: '#cfe8fc', height: '80vh'}}>
-                <h1 style={{textAlign:'center'}}>Stock Management</h1>
+                    <h1 style={{textAlign:'center'}}>User Settings</h1>
                     <Tabs value={value} onChange={handleChange}>
-                        <Tab label="Stock Price List" style={styles.tab_styling} />
-                        <Tab label="ML Price List" style={styles.tab_styling} />
+                        <Tab label="Stock Configuration" style={styles.tab_styling} />
+                        <Tab label="Subscription management" style={styles.tab_styling} />
                     </Tabs>
                     <TabContext value={value.toString()}>
                         <TabPanel value="0">
-                            <StockPriceListTable/>
+                        <StockPriceListTable/>
                         </TabPanel>
                         <TabPanel value="1">
-                            <MLPriceListTable />
+                        <EnhancedTable/>
                         </TabPanel>
                     </TabContext>
                 </Box>

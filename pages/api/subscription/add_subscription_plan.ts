@@ -19,11 +19,13 @@ export default async (req, res) => {
                 "price"             : price,
                 "watchlistLimit"    : watchlistLimit
             }
-            
+
         } else {
             res.status(406).json({
                 "message" : "Specify the plan_name, price and watchlist_limit"
             });
+
+            return
         }
 
         try{

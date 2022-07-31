@@ -12,13 +12,14 @@ export default async (req, res) => {
         const price = req.body.price;
         const watchlistLimit = req.body.watchlist_limit;
 
-        if (planName && price && watchlistLimit)
+        if (req.body.plan_name && req.body.price && req.body.watchlist_limit)
         {
             query = {
-                "planName"          : req.body.plan_name,
-                "price"             : req.body.price,
-                "watchlistLimit"    : req.body.watchlist_limit
+                "planName"          : planName,
+                "price"             : price,
+                "watchlistLimit"    : watchlistLimit
             }
+            
         } else {
             res.status(406).json({
                 "message" : "Specify the plan_name, price and watchlist_limit"

@@ -2,7 +2,7 @@ import handler from "../../../pages/api/superuser/get_one_superuser";
 import prisma from "../../../config/prisma";
 import {createMocks} from "node-mocks-http";
 
-describe("Test get_one_superuser.ts.ts", () => {
+describe("Test get_one_superuser.ts", () => {
 
     test("When getting one superusers passes", async () => {
         // 1. mock the data
@@ -24,7 +24,7 @@ describe("Test get_one_superuser.ts.ts", () => {
             ]
         }
 
-        prisma.superuser.findMany = jest.fn().mockReturnValueOnce(app_result);
+        prisma.user.findUnique = jest.fn().mockReturnValueOnce(app_result);
 
         // 2. input api call
         const {req, res} = createMocks({

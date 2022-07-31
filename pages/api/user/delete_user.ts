@@ -31,7 +31,7 @@ export default async (req, res) => {
                 } else {
                     console.log(`User ${input_username} does not exist`)
                     return res.status(406).json({
-                        "message": `Stock ${input_username} does not exist`
+                        "message": `User ${input_username} does not exist`
                     });
                 }
 

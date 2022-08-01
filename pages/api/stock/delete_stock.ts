@@ -5,18 +5,6 @@ export default async (req, res) => {
 
     if (req.method === "POST"){
 
-        if (authorization_check(req.headers.authorization)) {
-
-            const date_time_now = new Date().toLocaleString("en-US", {
-                timeZone: 'Asia/Singapore',
-            });
-            console.log(date_time_now);
-        } else {
-            return res.status(400).json({
-                "message": `Not authorised`,
-            });
-        }
-
         let ticker_symbol, stock_id;
 
         try{

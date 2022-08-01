@@ -52,7 +52,6 @@ const StickyHeadTable = (props) => {
       font1 = comparePrice(props.lastprice, onedayprediction);
       font7 = comparePrice(props.lastprice, sevendayprediction);
       font30 = comparePrice(props.lastprice, thirtydayprediction);
-      console.log(props.lastprice);
     }
   } else {
     status = false;

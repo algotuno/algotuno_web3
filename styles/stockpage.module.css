@@ -1,6 +1,6 @@
 .chartarea{
 min-height: 100vh;
-  padding: 4rem 4rem;
+  padding: 5rem 5rem;
   justify-content:baseline;
   align-items: left;
   background-color: rgb(255, 255, 255);
@@ -33,10 +33,9 @@ min-height: 100vh;
 .tablegrid{
 display: flex;
 
-
 }
 .table1{
-  padding: 0rem 5rem 2rem;
+  padding: 0rem 5rem 3rem;
 
 
 }

@@ -1,7 +1,7 @@
-import * as React from 'react';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import * as React from "react";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { makeStyles } from "@mui/styles";
-import axios_api from '../../config/axios_api';
+import axios_api from "../../config/axios_api";
 import {
   Container,
   createTheme,
@@ -16,20 +16,37 @@ import {
   TableContainer,
   Table,
   Paper,
-} from "@mui/material"
-import { useEffect, useState } from 'react';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
+export let watchliststorage = [];
 
-export let watchliststorage=[];
+const postreq = (userID) => {
+  return {
+    user_id: userID,
+  };
+};
 
-
-export default function StocksList (props){
+export default function StocksList(props) {
+  const { data: session, status } = useSession();
   const [stocks, setStocks] = useState([]);
-  const [wishlist,setWishlist] = useState(watchliststorage);
+  const [userList, setUserList] = useState([]);
+  //const [wishlist,setWishlist] = useState(watchliststorage);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-  //const [page, setPage] = useState(1);
+
+  const [display, setDisplay] = useState<boolean>(false);
+  const [stat, setStatus] = useState<boolean>(null);
+  const [message, setMessage] = useState("");
+  //const [userID, setUserID] = useState("");
+  let userID;
+
+  if (status === "authenticated") {
+    userID = session.id;
+  } else if (status === "unauthenticated") {
+    return <p>Not signed in</p>;
+  }
 
   const useStyles = makeStyles({
     row: {
@@ -47,18 +64,56 @@ export default function StocksList (props){
     },
   });
   const classes = useStyles();
-  //const history = useHistory();
 
   const fetchStocks = async () => {
     setLoading(true);
-    const  {data} = await axios_api.get('/api/stock/get_all_stocks');
-    console.log(data);
-    
+    const { data } = await axios_api.get("/api/stock/get_all_stocks");
+    //console.log(data);
+
     setStocks(data.result);
     setLoading(false);
+    fetchUserStocks();
   };
+
+  const fetchUserStocks = async () => {
+    try {
+      const res = await fetch(`/api/watchlist/get_watchlist`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postreq(userID)),
+      })
+        .then(async (res) => {
+          const data = await res.json();
+          const stocklist = data.result;
+          return stocklist;
+        })
+
+        .then((stocklist) => {
+          setDisplay(true);
+          setMessage("Success");
+          setStatus(true);
+          setUserList(stocklist);
+          //console.log(stocklist);
+          //sto(true);
+          //setIsLoading(false);
+        });
+
+      setTimeout(() => {
+        setStatus(null);
+        setMessage("null");
+        // setDisplay(false);
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchStocks();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -66,60 +121,54 @@ export default function StocksList (props){
     palette: {
       primary: {
         main: "#fff",
-      }  
+      },
     },
   });
 
   const handleSearch = () => {
     return stocks.filter(
       (stock) =>
-      stock.companyName.toLowerCase().includes(search) ||
-      stock.tickerSymbol.toLowerCase().includes(search)
+        stock.companyName.toLowerCase().includes(search) ||
+        stock.tickerSymbol.toLowerCase().includes(search)
     );
   };
-  //add to wishlist
-  const handleAddToWishlist=(stockTicker,stockExchange)=>{
-    const check_wishlist = wishlist.findIndex((item) => item.ticker === stockTicker);
-    
-     //watchliststorage= this.state.watchliststorage.slice(0);
-     //watchliststorage.push({ticker:stockTicker,exchange:stockExchange})
-     if (check_wishlist !== -1) {
-      setWishlist([
-       ...wishlist
-      ]);
-    } else {
-      wishlist.push({ticker:stockTicker,exchange:stockExchange});
-      //setWishlist({ticker:stockTicker,exchange:stockExchange});
-      
-    }
-    console.log(watchliststorage);
-  }
 
-  return(
-    <ThemeProvider theme={darkTheme} >
+  let userStocks = stocks.filter((o1) =>
+    userList.some((o2) => o1.stockID === o2.stockID)
+  );
+
+  return (
+    <ThemeProvider theme={darkTheme}>
       <Container style={{ textAlign: "left" }}>
-          <Typography
-            variant="h4"
-            style={{ margin: 18, fontFamily: "Montserrat" }}
-          >
-            Stock Prices by Market Cap
-          </Typography>
+        <Typography
+          variant="h4"
+          style={{ margin: 18, fontFamily: "Montserrat" }}
+        >
+          Stock Prices by Market Cap
+        </Typography>
 
-          <Typography
-          variant='subtitle1'
-            style={{ margin: 18, fontFamily: "Montserrat" }}
-          >
-          <WarningAmberIcon sx={{ fontSize: 15 }}/> Pricing data updated on daily basis. Currency in USD.
-          </Typography>
+        <Typography
+          variant="subtitle1"
+          style={{ margin: 18, fontFamily: "Montserrat" }}
+        >
+          <WarningAmberIcon sx={{ fontSize: 15 }} /> Pricing data updated on
+          daily basis. Currency in USD.
+        </Typography>
 
-          <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{ maxHeight: 400 }}>
           {loading ? (
             <LinearProgress style={{ backgroundColor: "black" }} />
           ) : (
             <Table aria-label="simple table">
               <TableHead style={{ backgroundColor: "#575757" }}>
-                <TableRow >
-                  {["Ticker", "Price","Exchange", "24h Change", "Market Cap","Wishlist"].map((head) => (
+                <TableRow>
+                  {[
+                    "Ticker",
+                    "Price",
+                    "Exchange",
+                    "24h Change",
+                    "% Change",
+                  ].map((head) => (
                     <TableCell
                       style={{
                         color: "white",
@@ -135,111 +184,127 @@ export default function StocksList (props){
                 </TableRow>
               </TableHead>
               {/* Data for table */}
-              <TableBody >
-                {handleSearch()
-                  .slice()
-                  .map((row) => {
-                    //const profit = row.price_change_percentage_24h > 0;
-                    return (
-                      
-                      <TableRow
-                        className={classes.row}
-                        key={row.tickerSymbol}
+              <TableBody>
+                {userStocks.map((row, index) => {
+                  //const profit = row.price_change_percentage_24h > 0;
+
+                  return (
+                    <TableRow className={classes.row} key={row.tickerSymbol}>
+                      {/* ticker */}
+                      <TableCell
+                        onClick={() =>
+                          (document.location.href = `/stockpage?tickerSymbol=${row.tickerSymbol}&exchange=${row.exchange}`)
+                        }
+                        component="th"
+                        scope="row"
+                        style={{
+                          display: "flex",
+                          gap: 15,
+                          backgroundColor: "#8A8A8A",
+                        }}
                       >
-                        {/* ticker */}
-                        <TableCell
-                        onClick={() => document.location.href = `/stockpage?tickerSymbol=${row.tickerSymbol}&exchange=${row.exchange}`}
-                          component="th"
-                          scope="row"
-                          style={{
-                            display: "flex",
-                            gap: 15,
-                            backgroundColor: "#8A8A8A",
-                            
-                          }}
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
                         >
-                          <div
-                            style={{ display: "flex", flexDirection: "column" }}
+                          <span
+                            style={{
+                              textTransform: "uppercase",
+                              fontSize: 17,
+                            }}
                           >
-                            <span
-                              style={{
-                                textTransform: "uppercase",
-                                fontSize: 17,
-                              }}
-                            >
-                              {row.tickerSymbol}
-                            </span>
-                            <span style={{ color: "white",
-                                          fontSize: 12, }}>
-                              {row.companyName}
-                            </span>
-                          </div>
-                        </TableCell>
-                        {/* Price */}
-                        <TableCell align="right" style={{ backgroundColor: "#8A8A8A" }} >
-                          {/* {tickerSymbol}{" "}
-                          {numberWithCommas(row.current_price.toFixed(2))} */}
-                          <div><span style={{ color: "white" }}>
-                              ${parseFloat(row.latestPrice).toFixed(2)}
-                            </span></div>
-                        </TableCell>
-                        {/* Exchange */}
-                        <TableCell align="right"style={{ backgroundColor: "#8A8A8A" }}>
-                          {/* {tickerSymbol}{" "}
-                          {numberWithCommas(row.current_price.toFixed(2))} */}
-                          <div><span style={{ color: "white" }}>
-                              {row.exchange}
-                            </span></div>
-                        </TableCell>
-                        {/* 24h change */}
-                        <TableCell
-                          align="right"
-                          style={{
-                            //color: profit > 0 ? "rgb(14, 203, 129)" : "red",
-                            fontWeight: 500,
-                            backgroundColor: "#8A8A8A"
-                          }}
-                        >
-                          <div><span style={{ color: "white" }}>
-                          {parseFloat(row.priceChange).toFixed(2)}
+                            {row.tickerSymbol}
                           </span>
-                          </div>
-                          {/* {profit && "+"}
+                          <span style={{ color: "white", fontSize: 12 }}>
+                            {row.companyName}
+                          </span>
+                        </div>
+                      </TableCell>
+                      {/* Price */}
+                      <TableCell
+                        align="right"
+                        style={{ backgroundColor: "#8A8A8A" }}
+                      >
+                        {/* {tickerSymbol}{" "}
+                          {numberWithCommas(row.current_price.toFixed(2))} */}
+                        <div>
+                          <span style={{ color: "white" }}>
+                            ${parseFloat(row.latestPrice).toFixed(2)}
+                          </span>
+                        </div>
+                      </TableCell>
+                      {/* Exchange */}
+                      <TableCell
+                        align="right"
+                        style={{ backgroundColor: "#8A8A8A" }}
+                      >
+                        {/* {tickerSymbol}{" "}
+                          {numberWithCommas(row.current_price.toFixed(2))} */}
+                        <div>
+                          <span style={{ color: "white" }}>{row.exchange}</span>
+                        </div>
+                      </TableCell>
+                      {/* 24h change */}
+                      <TableCell
+                        align="right"
+                        style={{
+                          //color: profit > 0 ? "rgb(14, 203, 129)" : "red",
+                          fontWeight: 500,
+                          backgroundColor: "#8A8A8A",
+                        }}
+                      >
+                        <div>
+                          <span style={{ color: "white" }}>
+                            {parseFloat(row.priceChange).toFixed(2)}
+                          </span>
+                        </div>
+                        {/* {profit && "+"}
                           {row.price_change_percentage_24h.toFixed(2)}% */}
-                        </TableCell>
-                        {/* marketcap */}
-                        <TableCell align="right"style={{ backgroundColor: "#8A8A8A" }}>
+                      </TableCell>
+                      {/* marketcap */}
+                      <TableCell
+                        align="right"
+                        style={{
+                          //color: profit > 0 ? "rgb(14, 203, 129)" : "red",
+                          fontWeight: 500,
+                          backgroundColor: "#8A8A8A",
+                        }}
+                      >
+                        <div>
+                          <span style={{ color: "white" }}>
+                            {parseFloat(row.percentChange).toFixed(2)}
+                          </span>
+                        </div>
+                      </TableCell>
+                      {/* <TableCell align="right"style={{ backgroundColor: "#8A8A8A" }}>
                           {/* {symbol}{" "}
                           {numberWithCommas(
                             row.market_cap.toString().slice(0, -6)
                           )}
                           M */}
-                        </TableCell>
-                          {/* wishlist */}
-                          <TableCell align="right"
+                      {/* </TableCell>  */}
+                      {/* wishlist */}
+                      {/* <TableCell align="right"
                           style={{ backgroundColor: "#8A8A8A" }}
                           onClick={() =>handleAddToWishlist(row.tickerSymbol,row.exchange)}
-                          >
-                           {/* {symbol}{" "}
+                          > */}
+                      {/* {symbol}{" "}
                            {numberWithCommas(
                              row.market_cap.toString().slice(0, -6)
                            )}
                            M */}
-                          <FavoriteIcon sx={{ fontSize: "large" }}/>
+                      {/* <FavoriteIcon sx={{ fontSize: "large" }}/>
                           
-                         </TableCell>
-                         </TableRow>
-                    );
-                  })}
+                         </TableCell> */}
+                    </TableRow>
+                  );
+                })}
+
+                {/* })} */}
               </TableBody>
-              </Table>
+            </Table>
           )}
-        </TableContainer>     
-          
+        </TableContainer>
       </Container>
     </ThemeProvider>
-    
-  )
-
+  );
 }
-

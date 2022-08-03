@@ -6,16 +6,32 @@ export default async (req, res) => {
 
         try{
 
-            const all_stocks = await prisma.stock.findMany({});
+            const all_stocks = await prisma.stock.findMany({
+                include:{
+                    MLStockPrice:true
+                }
+            });
 
-            Promise.all(get_hsp_range(all_stocks)).then((values)=>{
-                const successMsg = "Retrieved stocks with ML predictions range"
-                console.log(successMsg);
-                res.status(200).json({
-                  "message" : successMsg,
-                  "result"  : values 
-                });
-            })
+           all_stocks.forEach(e=>{
+                const ml_price_list = e.MLStockPrice;
+
+                if(ml_price_list.length>=1){
+                    e["latest_stock_date"] = ml_price_list[ml_price_list.length-1]["DateString"];
+                    e["earliest_stock_date"] = ml_price_list[0]["DateString"];
+                } else {
+                    e["latest_stock_date"] = "No ML Predictions Found";
+                    e["earliest_stock_date"] = "No ML Predictions Found";
+                }
+
+                delete e.MLStockPrice;
+           });
+
+           const successMsg = `Found ${all_stocks.length} stocks`;
+           console.log(successMsg);
+           res.status(200).json({
+             "message" : successMsg,
+             "result"  : all_stocks 
+           });
 
         } catch (error) {
             const errorMsg = error.message;
@@ -26,32 +42,5 @@ export default async (req, res) => {
     } else {
         res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts GET methods`});
     }
-    
-    function get_hsp_range(ticker_symbols:any[]){
-
-        const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-
-        return ticker_symbols.map(async (e)=>{
-            const hsp_range = await prisma.mL_Stock_Price.aggregate({
-                _max : {Date: true},
-                _min : {Date: true},
-                where:{stockID : e.stockID}
-            })
-
-            let stock = e;
-            try{
-                const max = hsp_range["_max"]["Date"];
-                const min = hsp_range["_min"]["Date"];
-                stock['latest_stock_date'] = max.getDate() + "-" + months[max.getMonth()] + "-" + max.getFullYear();
-                stock['earliest_stock_date'] = min.getDate() + "-" + months[min.getMonth()] + "-" + min.getFullYear();
-            } catch (error){
-                console.log(error)
-                stock['latest_stock_date'] = "No ML Predictions found"
-                stock['earliest_stock_date'] = "No ML Predictions found"
-            }
-            return stock        
-        })
-    }
-
 
 }

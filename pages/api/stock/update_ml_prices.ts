@@ -25,10 +25,10 @@ export default async (req, res) => {
             return
         }
 
-        try{
-            model_type = parseInt(req.body.model_type);
-        } catch (error) {
-            const errorMsg = error.message;
+        model_type = parseInt(req.body.model_type);
+            
+        if(!model_type){
+            const errorMsg = "Input model_type must be integer";
             console.error(errorMsg)
             res.status(406).json({"message" : errorMsg});
             return

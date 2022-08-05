@@ -2,7 +2,7 @@ import handler from "../../../pages/api/superuser/add_superuser";
 import prisma from "../../../config/prisma";
 import {createMocks} from "node-mocks-http";
 
-describe("Test add_or_update_settings.ts", () => {
+describe("Test add_superuser.ts", () => {
 
     test("Add Superuser with valid username expecting success", async () => {
         // 1. mock the data

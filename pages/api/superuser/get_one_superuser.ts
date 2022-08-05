@@ -3,39 +3,45 @@ import prisma from '../../../config/prisma';
 export default async (req, res) => {
 
     if (req.method === "GET") {
-        const {query: {id}} = req;
-        const user_id: string = id !== undefined ? id : -1;
 
+        if (!req.body.user_id) {
+            const errorMsg = "user_id Null or undefined";
+            console.error(errorMsg);
+            res.status(406).json({"message": errorMsg});
+            return
+        }
+
+        const userID = req.body.user_id;
 
         try {
-            const user_entity = await prisma.user.findUnique({
-                where: {
-                    id: user_id,
+            const superuser_record = await prisma.user.findFirst({
+                where:{
+                    id : userID
+                },
+                include:{
+                    Superuser:true
                 }
             });
 
-            if (user_entity) {
-                const superuser = await prisma.superuser.findUnique({
-                    where: {
-                        userID: user_entity.id,
-                    }
-                });
+            if (superuser_record.Superuser.length == 1) {
 
-                let is_superuser = false;
-                if (superuser) {
-                    is_superuser = true;
+                delete superuser_record.password;
+                delete superuser_record.emailVerified;
+                delete superuser_record.image;
 
-                    delete user_entity.password;
-                    delete user_entity.emailVerified;
-                    delete user_entity.image;
-                }
+                const successMsg = `Retrieved superuser ${userID}'s details`
+                console.log(successMsg);
                 res.status(200).json({
-                    "is_superuser": is_superuser,
-                    "username": user_entity,
+                    "message":successMsg,
+                    "result":superuser_record
                 });
-                return;
+    
+            } else {
+                res.status(406).json({
+                    "message":`${userID} is not a superuser`
+                });
             }
-            throw new Error("user does not exist in database!");
+
         } catch (error) {
             const errorMsg = error.message;
             console.error(errorMsg)

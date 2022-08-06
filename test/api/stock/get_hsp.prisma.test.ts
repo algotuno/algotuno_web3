@@ -14,7 +14,7 @@ describe("Test get_hsp.ts", () => {
 
         const hsp_findmany_result = [
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-25T00:00:00.000Z",
               "DateString": "25-JUL-2017",
               "Open": 125.739998,
@@ -24,7 +24,7 @@ describe("Test get_hsp.ts", () => {
               "Volume": 37900
             },
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-26T00:00:00.000Z",
               "DateString": "26-JUL-2017",
               "Open": 126.059998,
@@ -34,7 +34,7 @@ describe("Test get_hsp.ts", () => {
               "Volume": 36000
             },
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-27T00:00:00.000Z",
               "DateString": "27-JUL-2017",
               "Open": 125.419998,
@@ -82,7 +82,7 @@ describe("Test get_hsp.ts", () => {
 
         const hsp_findmany_result = [
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-25T00:00:00.000Z",
               "DateString": "25-JUL-2017",
               "Open": 125.739998,
@@ -92,7 +92,7 @@ describe("Test get_hsp.ts", () => {
               "Volume": 37900
             },
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-26T00:00:00.000Z",
               "DateString": "26-JUL-2017",
               "Open": 126.059998,
@@ -102,7 +102,7 @@ describe("Test get_hsp.ts", () => {
               "Volume": 36000
             },
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-27T00:00:00.000Z",
               "DateString": "27-JUL-2017",
               "Open": 125.419998,
@@ -151,7 +151,7 @@ describe("Test get_hsp.ts", () => {
 
         const hsp_findmany_result = [
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-25T00:00:00.000Z",
               "DateString": "25-JUL-2017",
               "Open": 125.739998,
@@ -161,7 +161,7 @@ describe("Test get_hsp.ts", () => {
               "Volume": 37900
             },
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-26T00:00:00.000Z",
               "DateString": "26-JUL-2017",
               "Open": 126.059998,
@@ -171,7 +171,7 @@ describe("Test get_hsp.ts", () => {
               "Volume": 36000
             },
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-27T00:00:00.000Z",
               "DateString": "27-JUL-2017",
               "Open": 125.419998,
@@ -220,7 +220,7 @@ describe("Test get_hsp.ts", () => {
 
         const hsp_findmany_result = [
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-25T00:00:00.000Z",
               "DateString": "25-JUL-2017",
               "Open": 125.739998,
@@ -230,7 +230,7 @@ describe("Test get_hsp.ts", () => {
               "Volume": 37900
             },
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-26T00:00:00.000Z",
               "DateString": "26-JUL-2017",
               "Open": 126.059998,
@@ -240,7 +240,7 @@ describe("Test get_hsp.ts", () => {
               "Volume": 36000
             },
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-27T00:00:00.000Z",
               "DateString": "27-JUL-2017",
               "Open": 125.419998,
@@ -289,7 +289,7 @@ describe("Test get_hsp.ts", () => {
 
         const hsp_findmany_result = [
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-25T00:00:00.000Z",
               "DateString": "25-JUL-2017",
               "Open": 125.739998,
@@ -299,7 +299,7 @@ describe("Test get_hsp.ts", () => {
               "Volume": 37900
             },
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-26T00:00:00.000Z",
               "DateString": "26-JUL-2017",
               "Open": 126.059998,
@@ -309,7 +309,7 @@ describe("Test get_hsp.ts", () => {
               "Volume": 36000
             },
             {
-              "stockID": 39,
+              "stockID": 4,
               "Date": "2017-07-27T00:00:00.000Z",
               "DateString": "27-JUL-2017",
               "Open": 125.419998,

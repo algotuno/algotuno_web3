@@ -50,10 +50,40 @@ describe("Test get_all_stocks.ts", () => {
               ]
             }
         ]
+
+        const formatted_final_results = [
+          {
+            stockID: 4,
+            tickerSymbol: 'TEST1',
+            companyName: 'Test1 Inc.',
+            exchange: 'Test',
+            latestPrice: 161.509995,
+            priceChange: -1,
+            percentChange: 0.615346766825019
+          },
+          {
+            stockID: 6,
+            tickerSymbol: 'TEST2',
+            companyName: 'TEST2 company',
+            exchange: 'Test',
+            latestPrice: 13.04,
+            priceChange: 0.08999999999999986,
+            percentChange: 0.6949806949806939
+          },
+          {
+            stockID: 25,
+            tickerSymbol: 'TEST3',
+            companyName: 'TEST3 pte ltd',
+            exchange: 'Test',
+            latestPrice: 18.790001,
+            priceChange: 0.08999999999999986,
+            percentChange: 0.48128339672281223
+          }
+        ]
         
         const app_result = {
             "message" : `Found ${find_all_stocks_result.length} stocks`,
-            "result"  : find_all_stocks_result 
+            "result"  : formatted_final_results 
         }
 
         prisma.stock.findMany = jest.fn().mockReturnValueOnce(find_all_stocks_result);

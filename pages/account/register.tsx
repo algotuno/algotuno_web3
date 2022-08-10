@@ -66,6 +66,12 @@ const RegisterPage = () => {
       .then(async (res) => {
         const data = await res.json();
         const message = data.message;
+        console.log(res.status);
+        if (res.status == 200) {
+          setTimeout(() => {
+            document.location.href = "/account/signin";
+          }, 4000);
+        }
         return message;
       })
       .then((message) => {
@@ -80,7 +86,6 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(username, email, password);
     setIsLoading(true);
     await registerUser();
   };
@@ -139,7 +144,7 @@ const RegisterPage = () => {
 
           {isLoading ? (
             <Box mt={3}>
-              <CircularProgress size={24} /> awaiting response... 😴 😴 😴
+              <CircularProgress size={24} /> awaiting response...
             </Box>
           ) : null}
           {statusMessage !== "" && (

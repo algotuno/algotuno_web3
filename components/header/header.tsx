@@ -10,9 +10,9 @@ export default function Header() {
   const loading = status === "loading";
   const buttonSize = { height: "4em", width: "8em" };
   let email;
-  if (status == "authenticated") {
+  if (status === "authenticated") {
+    email = session.user.email;
   }
-  console.log(session.user.email);
   const signOutAndRedirect = async () => {
     await Router.push("/");
     await signOut();
@@ -26,9 +26,7 @@ export default function Header() {
           <ul className={styles.navItems}>
             {session ? (
               <li className={styles.navItem}>
-                <a style={{ color: "grey", fontSize: 14 }}>
-                  &#128100;{session.user.email}
-                </a>
+                <a style={{ color: "grey", fontSize: 14 }}>&#128100;{email}</a>
               </li>
             ) : (
               <></>

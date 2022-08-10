@@ -11,6 +11,7 @@ import { Grid, Tab, Tabs, TextField } from "@mui/material";
 import { TabContext, TabPanel } from "@mui/lab";
 import StockPriceListTable from "../../../components/admin/stock/stock_price_list_table";
 import MLPriceListTable from "../../../components/admin/stock/ml_price_list_table";
+import Head from "next/head";
 
 const theme = createTheme();
 
@@ -46,6 +47,9 @@ export default function Page() {
 
   return (
     <LayoutHeader>
+      <Head>
+        <title>Stocks Configuration</title>
+      </Head>
       <Container maxWidth="xl">
         {/* <Box style={{marginTop: "5.5em"}}/> */}
         <Box

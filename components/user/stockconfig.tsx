@@ -340,7 +340,7 @@ export default function StockPriceListTable() {
                     <TableCell>Ticker Symbol</TableCell>
                     <TableCell>StockID</TableCell>
                     <TableCell align="right">Exchange</TableCell>
-                    <TableCell align="right">Status</TableCell>
+                    {/* <TableCell align="right">Status</TableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>

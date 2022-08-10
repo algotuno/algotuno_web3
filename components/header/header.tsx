@@ -2,13 +2,17 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import styles from "./header.module.css";
 import Router from "next/router";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function Header() {
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const buttonSize = { height: "4em", width: "8em" };
-
+  let email;
+  if (status == "authenticated") {
+  }
+  console.log(session.user.email);
   const signOutAndRedirect = async () => {
     await Router.push("/");
     await signOut();
@@ -20,6 +24,15 @@ export default function Header() {
         <span className={styles.logo}>algotuno.io</span>
         <nav>
           <ul className={styles.navItems}>
+            {session ? (
+              <li className={styles.navItem}>
+                <a style={{ color: "grey", fontSize: 14 }}>
+                  &#128100;{session.user.email}
+                </a>
+              </li>
+            ) : (
+              <></>
+            )}
             {session ? (
               <li className={styles.navItem}>
                 <Link href="/main">
@@ -48,6 +61,7 @@ export default function Header() {
                 <a>About Us</a>
               </Link>
             </li>
+
             {session ? (
               <li className={styles.navItem}>
                 <Link href="/account/user_settings">
@@ -59,8 +73,11 @@ export default function Header() {
             )}
             {session ? (
               <li className={styles.navItem}>
-                <a onClick={() => signOutAndRedirect()}>
-                  <b>Log Out</b>
+                <a
+                  onClick={() => signOutAndRedirect()}
+                  style={{ cursor: "pointer" }}
+                >
+                  Log Out
                 </a>
               </li>
             ) : (

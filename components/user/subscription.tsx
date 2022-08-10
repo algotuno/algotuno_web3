@@ -44,21 +44,6 @@ export default function DataGridDemo() {
     userID = session.id;
   }
 
-  // const fetchSubscription = async () => {
-  //   setLoading(true);
-  //   const { data } = await axios_api.get("/api/user/get_all_user");
-  //   data.result.map((e) => {
-  //     if (e.id == userID) {
-  //       const subscription = e.Subscription[0].Subscription_Plan.planName;
-  //       const cost = e.Subscription[0].Subscription_Plan.price;
-  //       setPrice(cost);
-  //       setSub(subscription.toString());
-  //       setUserData(e);
-  //     }
-  //   });
-
-  // };
-
   const fetchUserDetails = async () => {
     const res = await fetch(`/api/user/get_user_details`, {
       method: "POST",
@@ -143,7 +128,7 @@ export default function DataGridDemo() {
 
   sub == "Pro" ? (probutton = true) : (probutton = false);
 
-  sub == "Full" ? (fullbutton = true) : (fullbutton = false);
+  sub == "Full Access" ? (fullbutton = true) : (fullbutton = false);
 
   const confirmSub = (sID) => {
     document.location.href = `/checkout?uID=${userID}&sID=${sID}`;

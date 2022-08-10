@@ -13,6 +13,7 @@ import GlobalStyles from "@mui/material/GlobalStyles";
 import Container from "@mui/material/Container";
 import Layout from "../components/layout";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 
 const tiers = [
   {
@@ -48,6 +49,9 @@ function PricingContent() {
 
   return (
     <React.Fragment>
+      <Head>
+        <title>Pricing</title>
+      </Head>
       <GlobalStyles
         styles={{
           li: { margin: 0, padding: 0, listStyle: "none" },

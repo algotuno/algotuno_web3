@@ -101,7 +101,6 @@ const RegisterPage = () => {
           <div className={classes.textField}>
             <TextField
               label="Email"
-              variant="filled"
               type="email"
               required
               value={email}
@@ -111,7 +110,6 @@ const RegisterPage = () => {
           <div className={classes.textField}>
             <TextField
               label="Username"
-              variant="filled"
               required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -120,7 +118,6 @@ const RegisterPage = () => {
           <div className={classes.textField}>
             <TextField
               label="Password"
-              variant="filled"
               type="password"
               required
               value={password}

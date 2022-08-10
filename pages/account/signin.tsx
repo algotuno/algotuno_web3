@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Credentials from "../../components/auth/Credentials";
 import { Avatar, Box, Container, Typography } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Head from "next/head";
 
 const Login = ({ providers, session, csrfToken }) => {
   // re-direct to this route if successful
@@ -26,6 +27,9 @@ const Login = ({ providers, session, csrfToken }) => {
   if (session) return null;
   return (
     <Container component="main" maxWidth="xs">
+      <Head>
+        <title>Sign In</title>
+      </Head>
       <Box
         sx={{
           marginTop: 8,

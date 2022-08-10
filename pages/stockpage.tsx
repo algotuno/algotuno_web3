@@ -8,6 +8,7 @@ import Watchlist from "../components/watchlist/watchlist";
 import StockCard from "../components/stockpage/stockheadercard";
 import StickyHeadTable from "../components/stockpage/table";
 import { useState } from "react";
+import Head from "next/head";
 
 const postreq = (ticker) => {
   return {
@@ -99,6 +100,9 @@ const StockPage = ({
 
   return (
     <Layout>
+      <Head>
+        <title>Stock Price Forecast</title>
+      </Head>
       <div className={styles.chartarea}>
         <div className={styles.container}>
           <h2>Price Forecast </h2>

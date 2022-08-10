@@ -44,7 +44,7 @@ const BtnLogin = ({
       {children}
 
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        Sign in with {provider.name}
+        Sign In
       </Button>
 
       {loading && <Loading />}

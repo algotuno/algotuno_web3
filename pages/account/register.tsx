@@ -12,7 +12,8 @@ import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import Head from "next/head";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const useStyles = makeStyles(
   {
     root: {
@@ -68,9 +69,10 @@ const RegisterPage = () => {
         const message = data.message;
         console.log(res.status);
         if (res.status == 200) {
+          toast.success("Sign Up successful.Redirecting...");
           setTimeout(() => {
             document.location.href = "/account/signin";
-          }, 4000);
+          }, 3500);
         }
         return message;
       })
@@ -95,6 +97,7 @@ const RegisterPage = () => {
       <Head>
         <title>Sign Up</title>
       </Head>
+      <ToastContainer />
       <Typography style={{ marginTop: "4em" }} align="center" variant="h3">
         algotuno.io
       </Typography>

@@ -157,7 +157,17 @@ function PricingContent() {
         </Grid>
       </Container>
       {session ? (
-        <></>
+        <Container sx={{ pt: 5, pb: 6 }}>
+          <Typography align="center">
+            <Button
+              variant="contained"
+              style={{ width: 400 }}
+              href="/account/user_settings"
+            >
+              CHANGE SUBSCRIPTION PLAN
+            </Button>
+          </Typography>
+        </Container>
       ) : (
         <Container sx={{ pt: 5, pb: 6 }}>
           <Typography align="center">

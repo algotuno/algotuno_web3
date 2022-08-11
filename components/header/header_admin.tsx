@@ -48,8 +48,11 @@ export default function HeaderAdmin() {
             </li>
             {session ? (
               <li className={styles.navItem}>
-                <a onClick={() => signOutAndRedirect()}>
-                  <b>Log Out</b>
+                <a
+                  onClick={() => signOutAndRedirect()}
+                  style={{ cursor: "pointer" }}
+                >
+                  Log Out
                 </a>
               </li>
             ) : (

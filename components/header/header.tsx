@@ -21,7 +21,17 @@ export default function Header() {
   return (
     <header>
       <div className={styles.navbar}>
-        <span className={styles.logo}>algotuno.io</span>
+        <span
+          className={styles.logo}
+          onClick={() =>
+            session
+              ? (document.location.href = "/main")
+              : (document.location.href = "/")
+          }
+          style={{ cursor: "pointer" }}
+        >
+          algotuno.io
+        </span>
         <nav>
           <ul className={styles.navItems}>
             {session ? (

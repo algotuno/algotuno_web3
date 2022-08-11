@@ -111,7 +111,7 @@ describe("Test get_all_subscription_plan.ts", () => {
         expect(res_output).toEqual(app_result);
     });
 
-    test("When getting all superusers fails", async () => {
+    test("When getting all subscription plans fails", async () => {
         // 1. mock the data
         const error = {
             "message": "mocked error"

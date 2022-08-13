@@ -163,12 +163,42 @@ describe("Test delete_settings.ts", () =>{
         });
     });
 
+    test("Deleting with invalid setting_name fails expecting generic error message", async () => {
+
+        const setting_name = "settingname";
+
+        // 1. mock the data
+        const delete_settings_result = {"count":0};
+
+        const errorMsg = {
+            "message" : `Failed to delete setting ${setting_name}`,
+            "result"  : delete_settings_result
+        }
+
+        prisma.app_Settings.deleteMany = jest.fn().mockReturnValueOnce(delete_settings_result);
+
+        // 2. input api call
+        const {req, res} = createMocks({
+            method: 'POST',
+            body: {
+                'setting_name': setting_name
+            }
+        });
+
+        // 3. call the api
+        await handler(req, res);
+        expect(res._getStatusCode()).toBe(406);
+
+        // 4. verify its output
+        const res_output = JSON.parse(res._getData());
+        console.log(res_output);
+        expect(res_output).toEqual(errorMsg);
+    });
+
     test("When omitting setting_id and setting_name in POST request expecting error", async () => {
 
         // 1. mock the data
-        const errorMsg = "Please specify either the setting_id OR setting_name";
-
-        prisma.app_Settings.deleteMany = jest.fn().mockRejectedValueOnce(errorMsg);
+        const errorMsg = {"message":"Please specify either the setting_id OR setting_name"};
 
         // 2. input api call
         const {req, res} = createMocks({
@@ -182,9 +212,7 @@ describe("Test delete_settings.ts", () =>{
         // 4. verify its output
         const res_output = JSON.parse(res._getData());
         console.log(res_output);
-        expect(res_output).toEqual({
-            "message" : errorMsg
-        });
+        expect(res_output).toEqual(errorMsg);
     });
 
     test("When using GET instead of POST expecting error", async () => {

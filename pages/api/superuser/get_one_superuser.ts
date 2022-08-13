@@ -23,7 +23,9 @@ export default async (req, res) => {
                 }
             });
 
-            if (superuser_record.Superuser.length == 1) {
+            console.log(superuser_record);
+
+            if (superuser_record.Superuser.length>0) {
 
                 delete superuser_record.password;
                 delete superuser_record.emailVerified;

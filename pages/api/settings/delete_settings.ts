@@ -39,7 +39,7 @@ export default async (req, res) => {
                 }
 
             } else {
-                res.status(200).json({
+                res.status(406).json({
                     "message" : "Please specify either the setting_id OR setting_name"
                 });
             }

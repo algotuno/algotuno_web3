@@ -6,16 +6,43 @@ export default async (req, res) => {
 
         try{
 
-            const all_stocks = await prisma.stock.findMany({});
+            const all_stocks = await prisma.stock.findMany({include:{historicalStockPrice:true}});
+            let stock_list = [];
 
-            Promise.all(get_hsp_range(all_stocks)).then((values)=>{
-                const successMsg = "Retrieved stocks with HSP range"
-                console.log(successMsg);
-                res.status(200).json({
-                  "message" : successMsg,
-                  "result"  : values 
-                });
+            for(let i = 0; i < all_stocks.length; i++){
+
+                const e = all_stocks[i]
+                console.log(e.tickerSymbol);
+
+                let min, max;
+
+                const hsp_array = e.historicalStockPrice;
+                
+                if (hsp_array.length>=1){
+                    min = hsp_array[0].DateString;
+                    max = hsp_array[hsp_array.length-1].DateString;
+                } else {
+                    min = "No HSP Found";
+                    max = "No HSP Found";
+                }
+                
+                let stock = {};
+                stock["stockID"] = e.stockID;
+                stock["tickerSymbol"] = e.tickerSymbol;
+                stock["companyName"] = e.companyName;
+                stock["exchange"] = e.exchange;
+                stock["latest_stock_date"] = max;
+                stock["earliest_stock_date"] = min;
+
+                stock_list.push(stock);
+
+            }
+
+            res.status(200).json({
+                "message":"done",
+                "result":stock_list
             })
+
 
         } catch (error) {
             const errorMsg = error.message;
@@ -26,32 +53,5 @@ export default async (req, res) => {
     } else {
         res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts GET methods`});
     }
-    
-    function get_hsp_range(ticker_symbols:any[]){
-
-        const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-
-        return ticker_symbols.map(async (e)=>{
-            const hsp_range = await prisma.historical_Stock_Price.aggregate({
-                _max : {Date: true},
-                _min : {Date: true},
-                where:{stockID : e.stockID}
-            })
-
-            let stock = e;
-            try{
-                const max = hsp_range["_max"]["Date"];
-                const min = hsp_range["_min"]["Date"];
-                stock['latest_stock_date'] = max.getDate() + "-" + months[max.getMonth()] + "-" + max.getFullYear();
-                stock['earliest_stock_date'] = min.getDate() + "-" + months[min.getMonth()] + "-" + min.getFullYear();
-            } catch (error){
-                console.log(error)
-                stock['latest_stock_date'] = "No HSP found"
-                stock['earliest_stock_date'] = "No HSP found"
-            }
-            return stock        
-        })
-    }
-
 
 }

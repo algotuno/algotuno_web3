@@ -63,7 +63,6 @@ const WhyChoose = () => {
                             <Heading as="h3">{title}</Heading>
                             <Text as="p">{text}</Text>
                         </Box>
-
                     ))}
                 </Flex>
             </Container>

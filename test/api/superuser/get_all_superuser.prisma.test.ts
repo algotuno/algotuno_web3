@@ -28,7 +28,7 @@ describe("Test get_all_superuser.ts", () => {
 
         // 2. input api call
         const {req, res} = createMocks({
-            method: 'GET',
+            method: 'GET'
         });
 
         // 3. call the api
@@ -44,7 +44,6 @@ describe("Test get_all_superuser.ts", () => {
     test("When getting all superusers fails", async () => {
         // 1. mock the data
         const error = {
-            "code": "",
             "message": "mocked error"
         };
 
@@ -60,10 +59,10 @@ describe("Test get_all_superuser.ts", () => {
         // 4. verify its output
         const res_output = JSON.parse(res._getData());
         console.log(res_output);
-        expect(res_output.result).toEqual(undefined);
+        expect(res_output).toEqual(error);
     });
 
-    test("When using POST instead of GET", async () => {
+    test("When using POST instead of GET expecting error", async () => {
         // 1. input api call
         const {req, res} = createMocks({method: 'POST'});
 

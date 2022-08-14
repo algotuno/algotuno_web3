@@ -108,7 +108,6 @@ describe("Test delete_superuser.ts", () => {
 
     test("Delete Superuser with valid username but expecting generic error", async () => {
         // 1. mock the data
-        const input_username = "user1"
         const superuserID = 1;
 
         const user_result = {
@@ -148,8 +147,6 @@ describe("Test delete_superuser.ts", () => {
         // 1. mock the data
         const errorMsg = "username Null or undefined";
 
-        prisma.app_Settings.deleteMany = jest.fn().mockRejectedValueOnce(errorMsg);
-
         // 2. input api call
         const {req, res} = createMocks({
             method: 'POST'
@@ -169,10 +166,8 @@ describe("Test delete_superuser.ts", () => {
 
     test("Other error", async () => {
         // 1. mock the data
-        const input_username = "user1"
-
         const errorMsg = {
-            "message": `User ${input_username} does not exist`
+            "message": "mocked error"
         }
 
         prisma.user.findFirst = jest.fn().mockRejectedValueOnce(errorMsg);
@@ -193,7 +188,7 @@ describe("Test delete_superuser.ts", () => {
         const res_output = JSON.parse(res._getData());
         console.log(res_output);
         expect(res_output).toEqual({
-            "message": `User ${input_username} does not exist`
+            "message": "mocked error"
         });
     
     });

@@ -13,6 +13,7 @@ import GlobalStyles from "@mui/material/GlobalStyles";
 import Container from "@mui/material/Container";
 import Layout from "../components/layout";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 
 const tiers = [
   {
@@ -48,6 +49,9 @@ function PricingContent() {
 
   return (
     <React.Fragment>
+      <Head>
+        <title>Pricing</title>
+      </Head>
       <GlobalStyles
         styles={{
           li: { margin: 0, padding: 0, listStyle: "none" },
@@ -153,7 +157,17 @@ function PricingContent() {
         </Grid>
       </Container>
       {session ? (
-        <></>
+        <Container sx={{ pt: 5, pb: 6 }}>
+          <Typography align="center">
+            <Button
+              variant="contained"
+              style={{ width: 400 }}
+              href="/account/user_settings"
+            >
+              CHANGE SUBSCRIPTION PLAN
+            </Button>
+          </Typography>
+        </Container>
       ) : (
         <Container sx={{ pt: 5, pb: 6 }}>
           <Typography align="center">

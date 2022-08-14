@@ -1,5 +1,6 @@
 import LayoutHeader from "../../components/layout_header";
 import * as React from "react";
+import Head from "next/head";
 import { Container, Grid, Paper, styled } from "@mui/material";
 import Box from "@mui/material/Box";
 import VerticalTabs from "../../components/admin/main/main_tabs";
@@ -7,6 +8,9 @@ import VerticalTabs from "../../components/admin/main/main_tabs";
 export default function Page() {
   return (
     <LayoutHeader>
+      <Head>
+        <title>Admin Portal</title>
+      </Head>
       <Container maxWidth="xl">
         <Box style={{ marginTop: "7.5em" }} />
 

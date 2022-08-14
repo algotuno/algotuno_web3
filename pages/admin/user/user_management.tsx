@@ -4,6 +4,7 @@ import * as React from "react";
 import LayoutHeader from "../../../components/layout_header";
 import SuperUserTable from "../../../components/admin/user/super_user_table";
 import BasicUserTable from "../../../components/admin/user/basic_user_table";
+import Head from "next/head";
 
 export default function Page() {
   const [activeStep, setActiveStep] = React.useState<number>(0);
@@ -23,6 +24,9 @@ export default function Page() {
 
   return (
     <LayoutHeader>
+      <Head>
+        <title>User Management</title>
+      </Head>
       <Container maxWidth="xl">
         <Box
           sx={{

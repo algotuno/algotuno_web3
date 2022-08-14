@@ -200,7 +200,7 @@ export default function StocksList(props) {
                         style={{
                           display: "flex",
                           gap: 15,
-                          backgroundColor: "#8A8A8A",
+                          backgroundColor: "#D0D0D0",
                         }}
                       >
                         <div
@@ -214,7 +214,7 @@ export default function StocksList(props) {
                           >
                             {row.tickerSymbol}
                           </span>
-                          <span style={{ color: "white", fontSize: 12 }}>
+                          <span style={{ color: "#545454", fontSize: 12 }}>
                             {row.companyName}
                           </span>
                         </div>
@@ -222,12 +222,16 @@ export default function StocksList(props) {
                       {/* Price */}
                       <TableCell
                         align="right"
-                        style={{ backgroundColor: "#8A8A8A" }}
+                        style={{ backgroundColor: "#D0D0D0" }}
                       >
                         {/* {tickerSymbol}{" "}
                           {numberWithCommas(row.current_price.toFixed(2))} */}
                         <div>
-                          <span style={{ color: "white" }}>
+                          <span
+                            style={{
+                              color: row.priceChange > 0 ? "green" : "red",
+                            }}
+                          >
                             ${parseFloat(row.latestPrice).toFixed(2)}
                           </span>
                         </div>
@@ -235,66 +239,50 @@ export default function StocksList(props) {
                       {/* Exchange */}
                       <TableCell
                         align="right"
-                        style={{ backgroundColor: "#8A8A8A" }}
+                        style={{ backgroundColor: "#D0D0D0" }}
                       >
-                        {/* {tickerSymbol}{" "}
-                          {numberWithCommas(row.current_price.toFixed(2))} */}
                         <div>
-                          <span style={{ color: "white" }}>{row.exchange}</span>
+                          <span style={{ color: "#000000" }}>
+                            {row.exchange}
+                          </span>
                         </div>
                       </TableCell>
                       {/* 24h change */}
                       <TableCell
                         align="right"
                         style={{
-                          //color: profit > 0 ? "rgb(14, 203, 129)" : "red",
                           fontWeight: 500,
-                          backgroundColor: "#8A8A8A",
+                          backgroundColor: "#D0D0D0",
                         }}
                       >
                         <div>
-                          <span style={{ color: "white" }}>
+                          <span
+                            style={{
+                              color: row.priceChange > 0 ? "green" : "red",
+                            }}
+                          >
                             {parseFloat(row.priceChange).toFixed(2)}
                           </span>
                         </div>
-                        {/* {profit && "+"}
-                          {row.price_change_percentage_24h.toFixed(2)}% */}
                       </TableCell>
                       {/* marketcap */}
                       <TableCell
                         align="right"
                         style={{
-                          //color: profit > 0 ? "rgb(14, 203, 129)" : "red",
                           fontWeight: 500,
-                          backgroundColor: "#8A8A8A",
+                          backgroundColor: "#D0D0D0",
                         }}
                       >
                         <div>
-                          <span style={{ color: "white" }}>
+                          <span
+                            style={{
+                              color: row.priceChange > 0 ? "green" : "red",
+                            }}
+                          >
                             {parseFloat(row.percentChange).toFixed(2)}
                           </span>
                         </div>
                       </TableCell>
-                      {/* <TableCell align="right"style={{ backgroundColor: "#8A8A8A" }}>
-                          {/* {symbol}{" "}
-                          {numberWithCommas(
-                            row.market_cap.toString().slice(0, -6)
-                          )}
-                          M */}
-                      {/* </TableCell>  */}
-                      {/* wishlist */}
-                      {/* <TableCell align="right"
-                          style={{ backgroundColor: "#8A8A8A" }}
-                          onClick={() =>handleAddToWishlist(row.tickerSymbol,row.exchange)}
-                          > */}
-                      {/* {symbol}{" "}
-                           {numberWithCommas(
-                             row.market_cap.toString().slice(0, -6)
-                           )}
-                           M */}
-                      {/* <FavoriteIcon sx={{ fontSize: "large" }}/>
-                          
-                         </TableCell> */}
                     </TableRow>
                   );
                 })}

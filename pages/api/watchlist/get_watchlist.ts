@@ -34,7 +34,7 @@ export default async (req, res) => {
         }
        
     } else {
-        res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts GET methods`});
+        res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts POST methods`});
     }
     
 

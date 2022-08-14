@@ -40,73 +40,70 @@ export default async (req, res) => {
             res.status(406).json({"message" : errorMsg});
             return
         }
-        
-        const start_date = req.body.start_date;
-        const end_date = req.body.end_date;
 
         // query the Yahoo Finance endpoint with the ticker symbol, start and end epoch times
-        const HSP = await getHSP({ticker_symbol, stock_id, start_date, end_date});
-        const populate_hsp_result = await populateHSP(ticker_symbol, HSP);
-        
-        res.status(populate_hsp_result["status"]).json({"message" : populate_hsp_result["message"]})
+        try{
+            getAndPopulateHSP(ticker_symbol, stock_id);
+
+        } catch (error) {
+            const errorMsg = error.message;
+            console.error(errorMsg)
+            res.status(406).json({"message" : errorMsg});
+        }
        
     } else {
         res.status(406).json({"message": `ERROR: ${req.method} method used; this endpoint only accepts POST methods`});
     }
- 
-}
 
-export const getHSP = async ({ticker_symbol, stock_id, start_date, end_date}) => {
-    const query_url = `https://query1.finance.yahoo.com/v7/finance/download/${ticker_symbol}?period1=${start_date}&period2=${end_date}&interval=1d&events=history&includeAdjustedClose=true`;
-    console.log(`Pulling ${ticker_symbol} data from ${query_url}`);
+    function getAndPopulateHSP(ticker_symbol: any, stock_id: any) {
+        var query_url = `https://query1.finance.yahoo.com/v7/finance/download/${ticker_symbol}?period1=${req.body.start_date}&period2=${req.body.end_date}&interval=1d&events=history&includeAdjustedClose=true`;
+        console.log(`Pulling ${ticker_symbol} data from ${query_url}`);
 
-    const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-    const csvParser = require("csv-parser");
-    const needle = require("needle");
+        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        const csvParser = require("csv-parser");
+        const needle = require("needle");
 
-    let result = [];
+        let result = [];
 
-    // uses Needle to get the HTTP request and CSV-Parser to transform the incoming data
-    needle.get(query_url).pipe(csvParser()).on("data", (data) => {
 
-        // parse each data field as a new variable
-        const hsp_data_date = new Date(data.Date);
+        // uses Needle to get the HTTP request and CSV-Parser to transform the incoming data
+        needle.get(query_url).pipe(csvParser()).on("data", (data) => {
 
-        // push a json object containing the new variables into the result array
-        result.push({
-            "stockID": stock_id,
-            "Date": hsp_data_date,
-            "DateString": hsp_data_date.getDate() + "-" + months[hsp_data_date.getMonth()] + "-" + hsp_data_date.getFullYear(),
-            "Open": parseFloat(data.Open),
-            "High": parseFloat(data.High),
-            "Low": parseFloat(data.Low),
-            "Close": parseFloat(data.Close),
-            "Volume": parseFloat(data.Volume)
+            // parse each data field as a new variable
+            const hsp_data_date = new Date(data.Date);
+
+            // push a json object containing the new variables into the result array
+            result.push({
+                "stockID": stock_id,
+                "Date": hsp_data_date,
+                "DateString": hsp_data_date.getDate() + "-" + months[hsp_data_date.getMonth()] + "-" + hsp_data_date.getFullYear(),
+                "Open": parseFloat(data.Open),
+                "High": parseFloat(data.High),
+                "Low": parseFloat(data.Low),
+                "Close": parseFloat(data.Close),
+                "Volume": parseFloat(data.Volume)
+            });
+
+        }).on("end", async (err) => {
+            if (err) {
+                res.status(406).json({ "message": err });
+            } else if (result.length == 0) {
+                res.status(406).json({ "message": "query returned no data" });
+            } else {
+                console.log(`Successfully pulled ${ticker_symbol} data; data length ${result.length}`);
+            }
+
+            try {
+                const populate_hsp_results = await prisma.historical_Stock_Price.createMany({ data: result });
+                const successMsg = `Inserted ${populate_hsp_results.count} records for ${ticker_symbol}`;
+                console.log(successMsg);
+                res.status(200).json({ "message": successMsg });
+            } catch (error) {
+                const errorMsg = error.message;
+                console.error(errorMsg);
+                res.status(406).json({ "message": errorMsg });
+            }
+
         });
-
-    }).on("end", async (err) => {
-        if (err) {
-            return {"status" : 406, "message":err}
-        } else if (result.length == 0) {
-            return {"status" : 406, "message":"query returned no data"}
-        } else {
-            // console.log(`Successfully pulled ${ticker_symbol} data; data length ${result.length}`);
-        }
-
-        return result;
-    });
-
-}
-
-export const populateHSP = async (ticker_symbol, stockdata) => {
-    try {
-        const populate_hsp_results = await prisma.historical_Stock_Price.createMany({ data: stockdata });
-        const successMsg = `Inserted ${populate_hsp_results.count} records for ${ticker_symbol}`;
-        // console.log(successMsg);
-        return { "status":200,"message": successMsg }
-    } catch (error) {
-        const errorMsg = error.message;
-        console.error(errorMsg);
-        return { "status":406, "message": errorMsg }
     }
 }

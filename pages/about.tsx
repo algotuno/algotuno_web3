@@ -8,7 +8,9 @@ import Banner from '../components/about/section1'
 import WhyChoose from '../components/about/section2'
 import Investment from '../components/about/section3';
 import ContactSupport from '../components/about/section4';
+import OurTech from "../components/about/section5";
 import theme from '../styles/theme';
+
 
 const AboutPage = () => (
   
@@ -21,6 +23,7 @@ const AboutPage = () => (
     <Banner />
     <WhyChoose/>
     <Investment/>
+    <OurTech/>
     <ContactSupport/>
   </Layout>
   </ThemeProvider>

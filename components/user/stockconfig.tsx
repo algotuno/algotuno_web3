@@ -302,9 +302,14 @@ export default function StockPriceListTable() {
                   </Grid>
 
                   <Grid item xs={4} alignContent="right">
-                    <Typography textAlign="right">
-                      *Basic users can make upto 3 updates per month.
-                    </Typography>
+                    <p style={{ textAlign: "right", marginTop: "-0.25em" }}>
+                      *Basic users can make up to 3 updates per month. <br></br>
+                      *Pro users can make up to 12 updates per month.
+                    </p>
+                    {/* <Typography textAlign="right">
+                     
+                      
+                    </Typography> */}
                   </Grid>
                 </Grid>
 

@@ -23,5 +23,6 @@ module.exports = {
     },
     transpilePackages: [
         'react-ts-tradingview-widgets'
-    ]
+    ],
+    reactStrictMode: false,
 };

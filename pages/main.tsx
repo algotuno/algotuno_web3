@@ -3,7 +3,7 @@ import Layout from "../components/layout";
 import * as React from "react";
 import loadable from "@loadable/component";
 import Head from "next/head";
-import { TickerTapeComponent } from "../components/index/TickerTape";
+// import { TickerTapeComponent } from "../components/index/TickerTape";
 import { Container } from "@mui/material";
 import BasicUserAuth from "../components/auth/BasicUserAuth";
 
@@ -17,7 +17,7 @@ export default function Page(props) {
       </Head>
       <BasicUserAuth>
         <Container style={{ marginTop: "5.5em" }}>
-          <TickerTapeComponent />
+{/*           <TickerTapeComponent /> */}
         </Container>
 
         <Container style={{ minHeight: "30em" }}>

@@ -30,6 +30,8 @@ export default function Footer() {
       const data = await res.json();
       //const message = data.message;
       const values = data.result;
+      if (values !== null) return;
+
       for (var i = 0; i < values.length; i++) {
         let user = values[i].userID.toString();
         //console.log(user);

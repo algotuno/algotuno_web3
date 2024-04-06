@@ -1,0 +1,1 @@
+- react-ts-tradingview-widgets has to be at version: 1.0.14, any version higher and it will result in build failure

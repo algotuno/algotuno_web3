@@ -21,8 +21,4 @@ module.exports = {
       //todo: this is a temp solution which skip(s) type checking during build time
       ignoreBuildErrors: true,
     },
-    transpilePackages: [
-        'react-ts-tradingview-widgets'
-    ],
-    reactStrictMode: false,
 };

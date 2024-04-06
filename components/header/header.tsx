@@ -50,15 +50,6 @@ export default function Header() {
             ) : (
               <></>
             )}
-            {session ? (
-              <li className={styles.navItem}>
-                <Link href="/charts">
-                  <a>Markets</a>
-                </Link>
-              </li>
-            ) : (
-              <></>
-            )}
             <li className={styles.navItem}>
               <Link href="/pricing">
                 <a>Pricing</a>
